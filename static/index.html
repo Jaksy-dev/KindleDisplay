@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>80</title>
+<style>
+  body { font-family: monospace; background: #111; color: #eee; padding: 16px; }
+</style>
+</head>
+<body>
+<div id="out">loading…</div>
+<script>
+function load() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/data', true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var data = JSON.parse(xhr.responseText);
+        document.getElementById('out').innerHTML =
+          '80: ' + (data.length ? data.join(', ') + ' min' : '&ndash;');
+      } else {
+        document.getElementById('out').textContent = 'error: ' + xhr.status;
+      }
+    }
+  };
+  xhr.send();
+}
+load();
+setInterval(load, 20000);
+</script>
+</body>
+</html>
+ 

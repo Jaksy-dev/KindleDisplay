@@ -1,0 +1,12 @@
+- [ ] Basic functionality - backend
+- [ ] Basic functionality - frontend
+- [ ] 80 Szentmihalyi ut
+- [ ] H8 Rakosfalva
+- [ ] 45 Rakosfalva hev (kelet fele)
+- [ ] Prettier UI
+- [ ] Replace negative departure time with "Most"
+- [ ] Put this on a server
+
+- [ ] Weather
+- [ ] Time
+- [ ] Calendar
