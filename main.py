@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-import httpx
-import json
+from httpx import AsyncClient
 from dotenv import load_dotenv
 from os import getenv
 
@@ -25,7 +24,7 @@ app = FastAPI()
 @app.get("/data")
 async def fetch_external_data():
     departures={"80":[], "H8":[], "45":[]}
-    async with httpx.AsyncClient() as client:
+    async with AsyncClient() as client:
         response = await client.get(f"{URL_BASE}{URL_80}")
         if not response.is_error:
             data = response.json()
