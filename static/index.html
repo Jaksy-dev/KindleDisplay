@@ -1,27 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>80</title>
+<title>KindleDisplay</title>
 <style>
-  body { font-family: monospace; background: #111; color: #eee; padding: 16px; }
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background: #ffffff;
+  color: #000000;
+  padding: 16px;
+  font-size: xx-large;
+}
+h1 {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: xx-large;
+  font-weight: bold;
+  margin: 0 0 12px 0;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #000;
+  letter-spacing: 2px;
+}
+.row {
+  padding: 12px 0;
+}
+hr.row-sep {
+  border: none;
+  border-top: 2px solid #ccc;
+  margin: 4px 0;
+}
+.badge-80 {
+  display: inline-block;
+  background: #E41F18;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 6px 30px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.badge-H8 {
+  display: inline-block;
+  background: #ED6E86;
+  color: #ffffff;
+  border-radius: 36px;
+  padding: 10px 10px;
+  font-weight: bold;
+  margin-right: 10px;
+  margin-left: 40px;
+}
+.badge-45 {
+  display: inline-block;
+  background: #009EE3;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 6px 30px;
+  font-weight: bold;
+  margin-right: 10px;
+}
 </style>
 </head>
 <body>
-<div id="out">loading…</div>
+<h1>Menetrend</h1>
+<div id="line80" class="row">
+  <span class="badge-80">80</span><span id="out80">loading…</span>
+</div>
+<hr class="row-sep">
+<div id="lineH8" class="row">
+  <span class="badge-H8">H8</span><span id="outH8">loading…</span>
+</div>
+<hr class="row-sep">
+<div id="line45" class="row">
+  <span class="badge-45">45</span><span id="out45">loading…</span>
+</div>
 <script>
+function render(id, arr) {
+  document.getElementById(id).innerHTML =
+    arr.length ? arr.join('\' ') + '\'' : '&ndash;';
+}
 function load() {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/data', true);
-  xhr.onreadystatechange = function() {
+  xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         var data = JSON.parse(xhr.responseText);
-        document.getElementById('out').innerHTML =
-          '80: ' + (data.length ? data.join(', ') + ' min' : '&ndash;');
+        render('out80', data['80']);
+        render('outH8', data['H8']);
+        render('out45', data['45']);
       } else {
-        document.getElementById('out').textContent = 'error: ' + xhr.status;
+        document.getElementById('out80').textContent = 'error: ' + xhr.status;
+        document.getElementById('outH8').textContent = 'error: ' + xhr.status;
+        document.getElementById('out45').textContent = 'error: ' + xhr.status;
       }
     }
   };
@@ -32,4 +101,3 @@ setInterval(load, 20000);
 </script>
 </body>
 </html>
- 
