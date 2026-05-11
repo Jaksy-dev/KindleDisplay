@@ -22,7 +22,37 @@ h1 {
   letter-spacing: 2px;
 }
 .row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 16px;
   padding: 12px 0;
+}
+.badge {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.destination {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -1px;
+}
+.times {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -1px;
 }
 hr.row-sep {
   border: none;
@@ -36,7 +66,6 @@ hr.row-sep {
   border-radius: 12px;
   padding: 6px 30px;
   font-weight: bold;
-  margin-right: 10px;
 }
 .badge-H8 {
   display: inline-block;
@@ -45,8 +74,6 @@ hr.row-sep {
   border-radius: 36px;
   padding: 10px 10px;
   font-weight: bold;
-  margin-right: 10px;
-  margin-left: 40px;
 }
 .badge-45 {
   display: inline-block;
@@ -55,23 +82,30 @@ hr.row-sep {
   border-radius: 12px;
   padding: 6px 30px;
   font-weight: bold;
-  margin-right: 10px;
 }
 </style>
 </head>
 <body>
 <h1>Menetrend</h1>
+
 <div id="line80" class="row">
-  <span class="badge-80">80</span><span id="out80">loading…</span>
+  <span class="badge"><span class="badge-80">80</span></span>
+  <span class="destination">Örs vezér tere</span>
+  <span class="times" id="out80">loading…</span>
 </div>
 <hr class="row-sep">
 <div id="lineH8" class="row">
-  <span class="badge-H8">H8</span><span id="outH8">loading…</span>
+  <span class="badge"><span class="badge-H8">H8</span></span>
+  <span class="destination">Örs vezér tere</span>
+  <span class="times" id="outH8">loading…</span>
 </div>
 <hr class="row-sep">
 <div id="line45" class="row">
-  <span class="badge-45">45</span><span id="out45">loading…</span>
+  <span class="badge"><span class="badge-45">45</span></span>
+  <span class="destination">Cinkota, Lassú utca</span>
+  <span class="times" id="out45">loading…</span>
 </div>
+
 <script>
 function render(id, arr) {
   document.getElementById(id).innerHTML =

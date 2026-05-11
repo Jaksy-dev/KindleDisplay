@@ -1,12 +1,13 @@
-- [ ] Basic functionality - backend
-- [ ] Basic functionality - frontend
-- [ ] 80 Szentmihalyi ut
+- [x] Basic functionality - backend
+- [x] Basic functionality - frontend
+- [x] 80 Szentmihalyi ut
 - [ ] H8 Rakosfalva
 - [ ] 45 Rakosfalva hev (kelet fele)
-- [ ] Prettier UI
+- [x] Prettier UI
 - [ ] Replace negative departure time with "Most"
 - [ ] Put this on a server
 
 - [ ] Weather
 - [ ] Time
 - [ ] Calendar
+- [ ] Force refresh of screen to prevent "ghosting"
