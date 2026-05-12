@@ -21,38 +21,47 @@ h1 {
   border-bottom: 3px solid #000;
   letter-spacing: 2px;
 }
-.row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  column-gap: 16px;
-  padding: 12px 0;
+table.row {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
 }
-.badge {
-  grid-column: 1;
-  grid-row: 1 / 3;
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+td.badge-cell {
+  vertical-align: middle;
+  text-align: center;
+  padding-right: 16px;
+  white-space: nowrap;
+  width: 1%;
 }
-.destination {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: end;
+td.destination {
+  vertical-align: bottom;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 0;
+  width: 99%;
   letter-spacing: -1px;
 }
-.times {
-  grid-column: 2;
-  grid-row: 2;
-  align-self: start;
+td.times {
+  vertical-align: top;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 0;
+  width: 99%;
   letter-spacing: -1px;
+}
+td.weather-icon {
+  vertical-align: middle;
+  text-align: right;
+  font-size: xxx-large;
+  padding-left: 8px;
+  white-space: nowrap;
+  width: 1%;
+}
+td.temp {
+  vertical-align: middle;
+  white-space: nowrap;
 }
 hr.row-sep {
   border: none;
@@ -64,63 +73,142 @@ hr.row-sep {
   background: #E41F18;
   color: #ffffff;
   border-radius: 12px;
-  padding: 6px 30px;
+  padding: 6px 0;
   font-weight: bold;
+  width: 100px;
+  text-align: center;
 }
 .badge-H8 {
   display: inline-block;
   background: #ED6E86;
   color: #ffffff;
-  border-radius: 36px;
-  padding: 10px 10px;
+  border-radius: 100%;
   font-weight: bold;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  padding-top: 28px;
+  box-sizing: border-box;
 }
 .badge-45 {
   display: inline-block;
   background: #009EE3;
   color: #ffffff;
   border-radius: 12px;
-  padding: 6px 30px;
+  padding: 6px 0;
   font-weight: bold;
+  width: 100px;
+  text-align: center;
 }
 </style>
 </head>
 <body>
 <h1>Menetrend</h1>
 
-<div id="line80" class="row">
-  <span class="badge"><span class="badge-80">80</span></span>
-  <span class="destination">Örs vezér tere</span>
-  <span class="times" id="out80">loading…</span>
-</div>
+<table class="row">
+  <tr>
+    <td class="badge-cell" rowspan="2"><span class="badge-80">80</span></td>
+    <td class="destination">Örs vezér tere</td>
+  </tr>
+  <tr>
+    <td class="times" id="out80">loading…</td>
+  </tr>
+</table>
 <hr class="row-sep">
-<div id="lineH8" class="row">
-  <span class="badge"><span class="badge-H8">H8</span></span>
-  <span class="destination">Örs vezér tere</span>
-  <span class="times" id="outH8">loading…</span>
-</div>
+<table class="row">
+  <tr>
+    <td class="badge-cell" rowspan="2"><span class="badge-H8">H8</span></td>
+    <td class="destination">Örs vezér tere</td>
+  </tr>
+  <tr>
+    <td class="times" id="outH8">loading…</td>
+  </tr>
+</table>
 <hr class="row-sep">
-<div id="line45" class="row">
-  <span class="badge"><span class="badge-45">45</span></span>
-  <span class="destination">Cinkota, Lassú utca</span>
-  <span class="times" id="out45">loading…</span>
-</div>
+<table class="row">
+  <tr>
+    <td class="badge-cell" rowspan="2"><span class="badge-45">45</span></td>
+    <td class="destination">Cinkota</td>
+  </tr>
+  <tr>
+    <td class="times" id="out45">loading…</td>
+  </tr>
+</table>
+<hr class="row-sep">
+<table class="row">
+  <tr>
+    <td class="temp" id="max-temp">loading…</td>
+    <td class="weather-icon" rowspan="2" id="weather-icon">…</td>
+  </tr>
+  <tr>
+    <td class="temp" id="min-temp">loading…</td>
+  </tr>
+</table>
 
 <script>
-function render(id, arr) {
+function render_departures(id, arr) {
   document.getElementById(id).innerHTML =
     arr.length ? arr.join('\' ') + '\'' : '&ndash;';
 }
-function load() {
+
+function render_weather(data) {
+  var maxEl = document.getElementById('max-temp');
+  var minEl = document.getElementById('min-temp');
+  var iconEl = document.getElementById('weather-icon');
+
+  if (data.apparent_temperature_max != null) {
+    maxEl.textContent = '▲ ' + Math.round(data.apparent_temperature_max) + '°C';
+  } else {
+    maxEl.textContent = '–';
+  }
+  if (data.apparent_temperature_min != null) {
+    minEl.textContent = '▼ ' + Math.round(data.apparent_temperature_min) + '°C';
+  } else {
+    minEl.textContent = '–';
+  }
+  if (data.weather_code != null) {
+    if (Math.floor(Math.random() * 100) === 42){
+      iconEl.innerHTML = '<img src="/icons/alien.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+    }
+    if (data.weather_code === 0 || data.weather_code === 1 || data.weather_code === 2 || data.weather_code === 3){
+      iconEl.innerHTML = '<img src="/icons/' + data.weather_code + '.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+    }
+    else if (data.weather_code >= 40 && data.weather_code <= 49){
+      iconEl.innerHTML = '<img src="/icons/40-49.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+    }
+    else if (data.weather_code >= 50 && data.weather_code <= 59){
+      iconEl.innerHTML = '<img src="/icons/50-59.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+    }
+    else if (data.weather_code >= 60 && data.weather_code <= 69){
+      iconEl.innerHTML = '<img src="/icons/60-69.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+    }
+    else if (data.weather_code >= 70 && data.weather_code <= 79){
+      iconEl.innerHTML = '<img src="/icons/70-79.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+    }
+    else if (data.weather_code >= 80 && data.weather_code <= 84){
+      iconEl.innerHTML = '<img src="/icons/70-79.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+    }
+    else if (data.weather_code >= 85 && data.weather_code <= 89){
+      iconEl.innerHTML = '<img src="/icons/86-89.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+    }
+    else if (data.weather_code >= 90 && data.weather_code <= 99){
+      iconEl.innerHTML = '<img src="/icons/90-99.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+    }
+  } else {
+      iconEl.innerHTML = '<img src="/icons/error.svg" alt="' + data.weather_code + '" style="width:80px;height:80px;display:block;">';
+  }
+}
+
+function load_departures() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/data', true);
+  xhr.open('GET', '/departures', true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         var data = JSON.parse(xhr.responseText);
-        render('out80', data['80']);
-        render('outH8', data['H8']);
-        render('out45', data['45']);
+        render_departures('out80', data['80']);
+        render_departures('outH8', data['H8']);
+        render_departures('out45', data['45']);
       } else {
         document.getElementById('out80').textContent = 'error: ' + xhr.status;
         document.getElementById('outH8').textContent = 'error: ' + xhr.status;
@@ -130,8 +218,27 @@ function load() {
   };
   xhr.send();
 }
-load();
-setInterval(load, 20000);
+
+function load_weather() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/weather', true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var data = JSON.parse(xhr.responseText);
+        render_weather(data);
+      } else {
+        document.getElementById('max-temp').textContent = 'error: ' + xhr.status;
+      }
+    }
+  };
+  xhr.send();
+}
+
+load_departures();
+setInterval(load_departures, 20000);
+load_weather();
+setInterval(load_weather, 60000);
 </script>
 </body>
 </html>
